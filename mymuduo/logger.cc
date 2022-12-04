@@ -23,6 +23,6 @@ void Logger::log(std::string msg)
     }
 
     //打印时间和msg
-    std::cout << "print time"
+    std::cout << Timestamp::now().toString()
               << ":" << msg << std::endl;
 }

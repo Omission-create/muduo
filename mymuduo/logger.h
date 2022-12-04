@@ -1,6 +1,7 @@
 #pragma once
 
 #include "noncopyable.h"
+#include "timestamp.h"
 #include <string>
 
 // ##__VA_ARGS__ 输入任意参数占位符
