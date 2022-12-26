@@ -6,7 +6,7 @@
 
 // ##__VA_ARGS__ 输入任意参数占位符
 // LOGINFO("%s %d",arg1,arg2)
-#define LOG_INFO(LogmsgFormat, ...)                       \
+#define LOG_INFO(logmsgFormat, ...)                       \
     do                                                    \
     {                                                     \
         Logger &log = Logger::instance();                 \
@@ -17,7 +17,7 @@
     } while (0)
 
 // LOGINFO("%s %d",arg1,arg2)
-#define LOG_ERROR(LogmsgFormat, ...)                      \
+#define LOG_ERROR(logmsgFormat, ...)                      \
     do                                                    \
     {                                                     \
         Logger &log = Logger::instance();                 \
@@ -28,7 +28,7 @@
     } while (0)
 
 // LOGINFO("%s %d",arg1,arg2)
-#define LOG_FATAL(LogmsgFormat, ...)                      \
+#define LOG_FATAL(logmsgFormat, ...)                      \
     do                                                    \
     {                                                     \
         Logger &log = Logger::instance();                 \
@@ -36,11 +36,12 @@
         char buf[1024] = {0};                             \
         snprintf(buf, 1024, logmsgFormat, ##__VA_ARGS__); \
         log.log(buf);                                     \
+        exit(-1);                                         \
     } while (0)
 
 // LOGINFO("%s %d",arg1,arg2)
 #ifdef MUDEBUG
-#define LOG_DEBUG(LogmsgFormat, ...)                      \
+#define LOG_DEBUG(logmsgFormat, ...)                      \
     do                                                    \
     {                                                     \
         Logger &log = Logger::instance();                 \
@@ -50,7 +51,7 @@
         log.log(buf);                                     \
     } while (0)
 #else
-#define LOG_DEBUG(LogmsgFormat, ...)
+#define LOG_DEBUG(logmsgFormat, ...)
 #endif
 
 // 定义日志级别 INFO ERROR FATAL DEBUG
@@ -80,11 +81,8 @@ public:
     void log(std::string msg);
 
 private:
-    Logger(/* args */);
+    Logger(/* args */) = default;
 
     int loglevel_ = 0;
 };
 
-Logger::Logger(/* args */)
-{
-}

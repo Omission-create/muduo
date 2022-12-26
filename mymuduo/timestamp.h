@@ -6,6 +6,8 @@
 class Timestamp
 {
 public:
+    Timestamp();
+
     // explicit 防止隐式类型转换
     explicit Timestamp(int64_t microSecondsSinceEpoch);
 

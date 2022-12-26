@@ -9,17 +9,9 @@ class noncopyable
 private:
     /* data */
 public:
-    noncopyable(/* args */);
-    ~noncopyable();
+    noncopyable(/* args */) = default;
+    ~noncopyable() = default;
 
     noncopyable(const noncopyable &) = delete;
     void operator=(const noncopyable &) = delete;
 };
-
-noncopyable::noncopyable(/* args */)
-{
-}
-
-noncopyable::~noncopyable()
-{
-}

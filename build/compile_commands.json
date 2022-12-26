@@ -1,0 +1,87 @@
+[
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/acceptor.o -c /home/qishy/GitHub/muduo/mymuduo/acceptor.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/acceptor.cc"
+},
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/buffer.o -c /home/qishy/GitHub/muduo/mymuduo/buffer.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/buffer.cc"
+},
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/channel.o -c /home/qishy/GitHub/muduo/mymuduo/channel.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/channel.cc"
+},
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/current_thread.o -c /home/qishy/GitHub/muduo/mymuduo/current_thread.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/current_thread.cc"
+},
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/default_poller.o -c /home/qishy/GitHub/muduo/mymuduo/default_poller.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/default_poller.cc"
+},
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/epoll_poller.o -c /home/qishy/GitHub/muduo/mymuduo/epoll_poller.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/epoll_poller.cc"
+},
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/eventloop.o -c /home/qishy/GitHub/muduo/mymuduo/eventloop.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/eventloop.cc"
+},
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/eventloop_thread.o -c /home/qishy/GitHub/muduo/mymuduo/eventloop_thread.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/eventloop_thread.cc"
+},
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/eventloop_threadpool.o -c /home/qishy/GitHub/muduo/mymuduo/eventloop_threadpool.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/eventloop_threadpool.cc"
+},
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/inetaddress.o -c /home/qishy/GitHub/muduo/mymuduo/inetaddress.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/inetaddress.cc"
+},
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/logger.o -c /home/qishy/GitHub/muduo/mymuduo/logger.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/logger.cc"
+},
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/poller.o -c /home/qishy/GitHub/muduo/mymuduo/poller.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/poller.cc"
+},
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/socket.o -c /home/qishy/GitHub/muduo/mymuduo/socket.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/socket.cc"
+},
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/tcp_connection.o -c /home/qishy/GitHub/muduo/mymuduo/tcp_connection.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/tcp_connection.cc"
+},
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/tcpserver.o -c /home/qishy/GitHub/muduo/mymuduo/tcpserver.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/tcpserver.cc"
+},
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/thread.o -c /home/qishy/GitHub/muduo/mymuduo/thread.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/thread.cc"
+},
+{
+  "directory": "/home/qishy/GitHub/muduo/build",
+  "command": "/usr/local/bin/g++  -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC   -o CMakeFiles/mymuduo.dir/timestamp.o -c /home/qishy/GitHub/muduo/mymuduo/timestamp.cc",
+  "file": "/home/qishy/GitHub/muduo/mymuduo/timestamp.cc"
+}
+]
