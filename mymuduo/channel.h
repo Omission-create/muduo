@@ -37,13 +37,13 @@ public:
     // 防止当channel被手动remove后，channel还在执行回调操作
     void tie(const std::shared_ptr<void> &);
 
-    int fd() const { return fd_; }
+    int fd() const { return fd_; } // 常成员函数不允许修改成员变量
     int events() const { return events_; }
 
     // 供Poller调用
     void set_revents(int revt) { revents_ = revt; }
 
-    // 设置fd的相应的事件和状态
+    // 设置fd的相应的事件和状态 设置fd对哪些事件感兴趣
     void enableReading()
     {
         events_ |= kReadEvent;
@@ -107,7 +107,7 @@ private:
     const int fd_;    // fd，Poller监听对象 epoll_ctl
     int events_;      // 注册fd感兴趣的事件
     int revents_;     // poller返回具体发生的事件
-    int index_;
+    int index_;       // channel的状态（是否添加到Poller） epoll_ctl是会先判断状态
 
     // 这里使用弱指针，是为了避免与TcpConnection循环引用：
     /**  _________________        ____________
@@ -116,7 +116,7 @@ private:
      *           ||+1
      *       shared_ptr
      */
-    std::weak_ptr<void> tie_; // 跨线程判断资源的生存状态
+    std::weak_ptr<void> tie_; // 跨线程判断TcpConnetion的生存状态
     bool tied_;
 
     // Channel通道里面能够知道fd最终发生的具体事件的revents，所以由它负责调用具体事件的回调函数

@@ -103,6 +103,6 @@ private:
     HighWaterMarkCallback highWaterMarkCallback_;
 
     size_t highWaterMark_;
-    Buffer inputBuffer_;
-    Buffer outputBuffer_;
+    Buffer inputBuffer_;  // 读fd
+    Buffer outputBuffer_; // 写fd
 };

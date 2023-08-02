@@ -36,11 +36,12 @@ EventLoop *EventLoopThread::startLoop()
     return loop;
 }
 
-// 下面这个方法，是在单独的新线程中运行的
+// thread_->start => 【子线程中调用】thread_->func() => EventLoopThread::threadFunc()
 void EventLoopThread::threadFunc()
 {
     EventLoop loop; // 创建一个独立的eventloop，one loop one thread
 
+    // 初始化回调初始化loop
     if (callback_)
     {
         callback_(&loop);

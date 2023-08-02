@@ -64,7 +64,8 @@ void TcpConnection::handleRead(Timestamp receiveTime)
 
 void TcpConnection::handleWrite()
 {
-    if (channel_->isWriting())
+    // LT模式会一直上报fd可写 直至buffer写空时disableWriting
+    if (channel_->isWriting()) // 是否可写
     {
         int saveErrno = 0;
         ssize_t n = outputBuffer_.writeFd(channel_->fd(), &saveErrno);
@@ -77,7 +78,6 @@ void TcpConnection::handleWrite()
                 if (writeCompleteCallback_)
                 {
                     // 唤醒loop_对应的thread线程，执行回调
-                    // bind只是绑定一个普通函数，跟成员函数无关
                     loop_->queueInLoop(std::bind(writeCompleteCallback_, shared_from_this()));
                 }
                 if (state_ == kDisconnecting)
@@ -105,7 +105,7 @@ void TcpConnection::handleClose()
     channel_->disableAll();
 
     TcpConnectionPtr connPtr(shared_from_this());
-    connectionCallback_(connPtr); // 执行关闭连接回调
+    connectionCallback_(connPtr); // onConnection包含关闭连接的部分
     closeCallback_(connPtr);      // 关闭连接的回调(TcpServer注册的)
 }
 
@@ -121,6 +121,7 @@ void TcpConnection::handleError()
     LOG_ERROR("TcpConnection::handleError name:%s - SO_ERROR:%d \n", name_.c_str(), err);
 }
 
+// 第一次send没有发送完，会把数据放到buffer，并注册epollout事件，调用handlewrite
 // 发送数据：应用写的块，内核发送慢 需要将数据暂时缓存到缓冲区
 void TcpConnection::sendInLoop(const void *message, size_t len)
 {
@@ -129,12 +130,12 @@ void TcpConnection::sendInLoop(const void *message, size_t len)
     bool faultError = false;
 
     // 之前调用过该connection的shutdown，不能发送
-    if (state_ == kDisconnecting)
+    if (state_ == kDisconnected)
     {
         LOG_ERROR("TcpConnection::sendInLoop discoonected");
     }
 
-    // 表示channel第一次开始写数据，而且缓冲区没有待发送的数据
+    // 表示channel第一次开始写数据【此时还没有给channel注册EPOLLOUT事件】，而且缓冲区没有待发送的数据
     if (!channel_->isWriting() && outputBuffer_.readableBytes() == 0)
     {
         nwrote = ::write(channel_->fd(), message, len);
@@ -143,7 +144,7 @@ void TcpConnection::sendInLoop(const void *message, size_t len)
             remaining = len - nwrote;
             if (remaining == 0 && writeCompleteCallback_)
             {
-                // 这里数据发送完成，就不用再给channel注册EPOLLOUT事件
+                // 这里数据发送完成，就不用再给channel注册EPOLLOUT事件，就不会调用handleWrite方法
                 loop_->queueInLoop(std::bind(writeCompleteCallback_, shared_from_this()));
             }
         }
@@ -153,7 +154,7 @@ void TcpConnection::sendInLoop(const void *message, size_t len)
             if (errno != EWOULDBLOCK) // 非阻塞正常的返回
             {
                 LOG_ERROR("TcpConnection::sendInLoop");
-                if (errno == EPIPE || errno == ECONNRESET)
+                if (errno == EPIPE || errno == ECONNRESET) // SIGPIPE RESET
                 {
                     faultError = true;
                 }
@@ -162,7 +163,7 @@ void TcpConnection::sendInLoop(const void *message, size_t len)
     }
 
     // 说明当前write没有完全发送出去，剩余数据需要保存到缓冲区中，然后给channel
-    // 注册epollout事件，poller发现tcp的发送缓冲区有空间，会通知相应的channel，调用writeCallback回调方法
+    // 注册epollout事件，poller发现tcp的发送缓冲区有空间，【LT模式不断】会通知相应的channel，调用writeCallback回调方法
     // 也就是调用TcpConnection::handleWrite方法，把发送缓冲的数据全部发送完成
     if (!faultError && remaining > 0)
     {
@@ -220,6 +221,7 @@ void TcpConnection::connectEstablished()
 {
     setState(kConnected);
     channel_->tie(shared_from_this());
+    // 开始只对读感兴趣
     channel_->enableReading();
 
     // 新连接建立。执行回调
@@ -229,10 +231,11 @@ void TcpConnection::connectEstablished()
 // 连接销毁
 void TcpConnection::connectDestroyde()
 {
-    if (state_ == kDisconnected)
+    if (state_ == kConnected)
     {
         setState(kDisconnected);
         channel_->disableAll(); // 把channel_感兴趣的事件全部del
+        connectionCallback_(shared_from_this());
     }
-    channel_->remove();
+    channel_->remove(); // 把channel从Poller中删除
 }

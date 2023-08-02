@@ -39,8 +39,8 @@ Acceptor::~Acceptor()
 void Acceptor::listen()
 {
     listenning_ = true;
-    accept_socket_.listen(); // listen
-    accept_channel_.enableReading();
+    accept_socket_.listen();         // listen
+    accept_channel_.enableReading(); //=> update() =>Poller::updateChannel()
 }
 
 // listenfd用新用户连接后分发

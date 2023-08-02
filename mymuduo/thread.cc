@@ -20,7 +20,7 @@ Thread::Thread(ThreadFunc func, const std::string &name)
 Thread::~Thread()
 {
     // thread::join 主线程阻塞等待子线程执行结束
-    // thread::detach 子线程脱离主线程，成为守护进程
+    // thread::detach 子线程脱离主线程，成为守护线程
     if (started_ && !joined_)
     {
         thread_->detach(); // thread类提供的设置线程分离
@@ -43,7 +43,7 @@ void Thread::start()
         func_(); }));
 
     // 这里必须等待上面新创建线程的tid值
-    sem_wait(&sem); // 信号量阻塞主线程
+    sem_wait(&sem); // 信号量阻塞主线程 保证子线程创建成功
 }
 
 void Thread::join()

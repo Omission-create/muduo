@@ -18,7 +18,7 @@ using namespace muduo;
 using namespace net;
 using namespace placeholders;
 
-//基于muduo网络库开发服务器程序
+// 基于muduo网络库开发服务器程序
 /*
 1 组合TcpServer对象
 2 创建EventLoo事件循环对象的指针
@@ -33,17 +33,17 @@ private:
     TcpServer server_; // 1 组合TcpServer对象
     EventLoop *loop_;  // 2 创建EventLoo事件循环对象的指针
 
-    //专门处理用户读写事件
-    void onMessage(const TcpConnectionPtr &conn, //连接
-                   Buffer *buf,                  //缓冲区
-                   Timestamp time)               //接收到数据的事件信息
+    // 专门处理用户读写事件
+    void onMessage(const TcpConnectionPtr &conn, // 连接
+                   Buffer *buf,                  // 缓冲区
+                   Timestamp time)               // 接收到数据的事件信息
     {
         string s = buf->retrieveAllAsString();
         cout << "recv data: " << s << "time: " << time.toString() << endl;
         conn->send(s);
     }
 
-    //专门处理用户的连接和断开 epoll listenfd
+    // 专门处理用户的连接和断开 epoll listenfd
     void onConnection(const TcpConnectionPtr &conn)
     {
         if (conn->connected())
@@ -59,15 +59,16 @@ private:
     }
 
 public:
-    ChatServer(EventLoop *loop,                           //事件循环
+    ChatServer(EventLoop *loop,                           // 事件循环
                const InetAddress &listenAddr,             // IP + port
-               const string &nameArg)                     //服务器名字
+               const string &nameArg)                     // 服务器名字
         : server_(loop, listenAddr, nameArg), loop_(loop) // TcpServer没有默认构造函数
     {
-        //给服务器注册用户连接的创建和断开回调
+        // 给服务器注册用户连接的创建和断开回调
         server_.setConnectionCallback(std::bind(&ChatServer::onConnection, this, _1)); // 4 在当前服务其中注册处理连接的函数和处理读写的函数
 
-        //给服务器注册用户读写回调事件回调
+        // 给服务器注册用户读写回调事件回调
+        // 动态成员函数bind this指针
         server_.setMessageCallback(std::bind(&ChatServer::onMessage, this, _1, _2, _3));
 
         // 设置服务器的线程数量 1个I/O线程 3个worker线程
@@ -88,7 +89,7 @@ ChatServer::~ChatServer()
 
 int main()
 {
-    EventLoop loop; // epoll
+    EventLoop loop; // baseloop
     InetAddress addr("127.0.0.1", 6000);
     ChatServer server(&loop, addr, "ChatSercer");
 

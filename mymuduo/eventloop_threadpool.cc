@@ -14,6 +14,7 @@ EventLoopThreadPool::EventLoopThreadPool(EventLoop *baseloop, const std::string 
 EventLoopThreadPool::~EventLoopThreadPool()
 {
     // 不需要删除loop ，栈上资源
+    // Eventloop.poll()阻塞保证loop不被销毁 直至调用EventloopThread的析构函数quit_=true
 }
 
 void EventLoopThreadPool::start(const ThreadInitCallback &cb)
@@ -37,7 +38,7 @@ void EventLoopThreadPool::start(const ThreadInitCallback &cb)
 }
 
 // 如果工作在多线程中，baseloop_默认以轮询的方式分配channel给subloop
-EventLoop *EventLoopThreadPool::EventLoopThreadPool::getNextLoop()
+EventLoop *EventLoopThreadPool::getNextLoop()
 {
     EventLoop *loop = baseloop_;
 
@@ -45,11 +46,11 @@ EventLoop *EventLoopThreadPool::EventLoopThreadPool::getNextLoop()
     {
         // round-robin
         loop = loops_[next_];
-        ++next_;
-        if (next_ >= loops_.size())
-        {
-            next_ = 0;
-        }
+        next_ = (++next_) % loops_.size();
+        // if (next_ >= loops_.size())
+        // {
+        //     next_ = 0;
+        // }
     }
 
     return loop;

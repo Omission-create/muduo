@@ -71,11 +71,14 @@ private:
     std::atomic_bool quit_;    // 标志退出loop循环
     const pid_t threadId_;     // 记录当前loop所在线程的id
     Timestamp pollReturnTime_; // poller返回发生时间的channels的时间点
+
+    // one loop one poller
     std::unique_ptr<Poller> poller_;
 
     int wakeupFd_; // 当mainLoop获取一个新用户的channel，通过轮询选择一个subLoop处理线程
     std::unique_ptr<Channel> wakeupChannel_;
 
+    // poll返回的有revents的channel
     ChannelList activeChannels_;
     // Channel *currentActiveChannel_;
 

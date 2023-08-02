@@ -48,8 +48,10 @@ void TcpServer::start()
 {
     if (started_++ == 0) // 防止一个tcpserver对象被start多次
     {
-        threadpool_->start(threadInitCallback_); // 底层启动线程池
-        loop_->runInLoop(std::bind(&Acceptor::listen, acceptor_.get()));
+        // threadpool_->start => EventLoopThread::startLoop() => 【创建n线程】thread_->start() => 【创建loop】threadFunc()
+        threadpool_->start(threadInitCallback_);
+        // 在main线程中直接调用listen
+        loop_->runInLoop(std::bind(&Acceptor::listen, acceptor_.get())); // loop_->loop()需要自己调用
     }
 }
 
@@ -72,7 +74,10 @@ void TcpServer::removeConnectionInLoop(const TcpConnectionPtr &conn)
  * @param sockfd
  * @param peerAddr
  */
-// Acceptor::handleRead==>Tcpserver::newConnection
+
+// TcpServer::start() => EventLoop::runInloop() => Acceptor::listen() => Channel::enableReading() => Poller::updateChannel(）
+//  Acceptor::handleRead==>Tcpserver::newConnection
+// loop_.loop()
 void TcpServer::newConnection(int sockfd, const InetAddress &peerAddr)
 {
     EventLoop *ioLoop = threadpool_->getNextLoop();

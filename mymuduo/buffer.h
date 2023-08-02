@@ -29,7 +29,7 @@ public:
 
     size_t writeableBytes() const
     {
-        return buffer_.size() - readIndex_;
+        return buffer_.size() - writeIndex_;
     }
 
     size_t prependableBytes() const
@@ -56,6 +56,7 @@ public:
         }
     }
 
+    // 复位
     void retrieveAll()
     {
         readIndex_ = writeIndex_ = kCheapPrepend;
@@ -121,6 +122,8 @@ private:
 
     /*
         kCheapPrepend |  have read | reader | writer |
+                                   |
+                                readindex_
     */
     void makeSpace(size_t len)
     {

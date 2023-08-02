@@ -89,7 +89,7 @@ void EventLoop::loop()
     LOG_INFO("EventLoop %p stop looping\n", this);
 }
 /**
- * @brief 退出事件循环 1.loop在自己线程中调用quit
+ * @brief 退出事件循环 1.loop在自己线程中调用quit 此时自己肯定不在epoll_wait
  *                     2.如果在其他线程中，调用quit
  *
  *                  mainLoop
@@ -99,7 +99,7 @@ void EventLoop::loop()
 void EventLoop::quit()
 {
     quit_ = true;
-    if (!isInLoopThread()) // 在subloop中调用主线程quit，先将主线程从poll中唤醒，循环进行到判断quit_
+    if (!isInLoopThread()) // 在subloop中调用mainLoop::quit，mainLoop判断发现自己在subloop线程中，先将mainLoop线程从poll中唤醒，循环进行到判断quit_
     {
         wakeup();
     }
@@ -135,7 +135,7 @@ void EventLoop::queueInLoop(Functor cb)
     }
 
     // 唤醒相应的，需要执行上面回调操作的loop线程
-    //  callingPendingFunctors_表示当前loop正在执行回调，但是loop又有新的回调，依然需要唤醒执行新添加的回调
+    //  callingPendingFunctors_表示当前loop正在执行回调，但是loop又有新的回调，依然需要唤醒
     if (!isInLoopThread() || callingPendingFunctors_)
     {
         wakeup(); // 唤醒loop所在线程
@@ -185,7 +185,7 @@ void EventLoop::handleRead() // wake up
 
 void EventLoop::doPendingFunctors() // 执行回调
 {
-    std::vector<Functor> functors;
+    std::vector<Functor> functors;//局部functors是为了保证注册回调的效率，及时释放掉锁
     callingPendingFunctors_ = true;
 
     {

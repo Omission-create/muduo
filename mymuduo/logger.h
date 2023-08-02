@@ -67,17 +67,17 @@ enum LogLevel
 class Logger : noncopyable
 {
 public:
-    //单体模式 获取日志唯一的实例对象
+    // local static单体模式 线程安全 获取日志唯一的实例对象
     static Logger &instance()
     {
-        static Logger logger; //分配到栈，析构自己释放
+        static Logger logger;
         return logger;
     }
 
     // 设置日志级别
     void set_loglevel(int level) { loglevel_ = level; }
 
-    //写日志
+    // 写日志
     void log(std::string msg);
 
 private:
@@ -85,4 +85,3 @@ private:
 
     int loglevel_ = 0;
 };
-

@@ -11,6 +11,7 @@
 class Thread : noncopyable
 {
 public:
+    // treadfunc需要参数可以通过bind绑定器实现
     using ThreadFunc = std::function<void()>;
 
     explicit Thread(ThreadFunc, const std::string &name = "");
@@ -30,7 +31,7 @@ private:
     bool started_;
     bool joined_;
     // std::thread thread_;//创建thread对象的时候线程就会启动，但是我们需要控制线程启动
-    std::shared_ptr<std::thread> thread_;
+    std::shared_ptr<std::thread> thread_; // tread智能指针
     pid_t tid_;
     ThreadFunc func_;
     std::string name_;

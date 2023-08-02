@@ -20,7 +20,7 @@ Channel::~Channel()
 {
 }
 
-// 将TcpConnection的只能指针传给tie(channel调用TcpConnectio的类方法)
+// 将TcpConnection的智能指针传给tie(channel调用TcpConnectio的类方法)
 void Channel::tie(const std::shared_ptr<void> &obj)
 {
     tie_ = obj;
@@ -42,8 +42,8 @@ void Channel::handleEvent(Timestamp receiveTime)
     std::shared_ptr<void> guard;
     if (tied_)
     {
-        guard = tie_.lock();
-        if (guard)
+        guard = tie_.lock(); // 提升tie_指针，如果提升失败。。。
+        if (guard)           // 如果tie_监控的TcpConnection对象析构，则不调用
             handleEventWithGuard(receiveTime);
     }
     else
